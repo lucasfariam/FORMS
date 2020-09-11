@@ -1,5 +1,6 @@
+import { Usuario } from './models/usuario';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cadastro',
@@ -8,21 +9,24 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class CadastroComponent implements OnInit {
 
   cadastroForm: FormGroup
+  usuario: Usuario
+   
+  constructor( private fb: FormBuilder) { }
 
-  constructor() { }
-
+    //abaixo campos que seram preenchido e enviados quando for submetido
   ngOnInit() {
-    this.cadastroForm = new FormGroup({
-      nome: new FormControl(''),
-      cpf: new FormControl(''),
-      email: new FormControl(''),
-      senha: new FormControl(''),
-      senhaConfirmacao: new FormControl('')
+    this.cadastroForm = this.fb.group({
+      nome: ['', Validators.required],
+      cpf: ['', Validators.required],
+      email: ['', Validators.required],
+      senha: ['', Validators.required],
+      senhaConfirmacao: ['', Validators.required]
     })
   }
+
   adicionarUsuario() {
-    let x = this.cadastroForm.value
-
+    this.usuario = Object.assign({}, this.usuario, this.cadastroForm.value)
+    //acima ele traz o OBJ usuario preenchido com os dados do formulario!
   }
-
 }
+ 
