@@ -10,23 +10,30 @@ export class CadastroComponent implements OnInit {
 
   cadastroForm: FormGroup
   usuario: Usuario
-   
-  constructor( private fb: FormBuilder) { }
+  formResult: string = ''
 
-    //abaixo campos que seram preenchido e enviados quando for submetido
+  constructor(private fb: FormBuilder) { }
+
+  //abaixo campos que seram preenchido e enviados quando for submetido
   ngOnInit() {
     this.cadastroForm = this.fb.group({
       nome: ['', Validators.required],
       cpf: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email] ],
       senha: ['', Validators.required],
       senhaConfirmacao: ['', Validators.required]
     })
   }
 
   adicionarUsuario() {
-    this.usuario = Object.assign({}, this.usuario, this.cadastroForm.value)
-    //acima ele traz o OBJ usuario preenchido com os dados do formulario!
+    if (this.cadastroForm.dirty && this.cadastroForm.valid) {
+      // abaixo ele traz o OBJ usuario preenchido com os dados do formulario!
+      this.usuario = Object.assign({}, this.usuario, this.cadastroForm.value)
+      this.formResult = JSON.stringify(this.cadastroForm.value) // abaixo ele verifica se os campos foram preenchido e retorna o valor dele
+    
+    }
+    else {
+      this.formResult = "Não Enviado!!!"
+    }
   }
 }
- 
