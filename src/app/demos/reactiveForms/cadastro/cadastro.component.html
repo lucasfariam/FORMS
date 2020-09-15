@@ -8,16 +8,14 @@
                 <label class="col-md-2 control-label" for="nome"> Nome Completo</label>
                 <div class="col-md-10">
                     <input class="form-control" id="nome" type="text" placeholder="Nome (Requerido)" formControlName="nome" [ngClass]="{'is-invalid': cadastroForm.get('nome').errors && ( cadastroForm.get('nome').dirty || cadastroForm.get('nome').touched )}">
-                    <span class="text-danger" *ngIf="cadastroForm.get('nome').errors && ( cadastroForm.get('nome').dirty || cadastroForm.get('nome').touched )">
-                        <p>Preencha o campo nome</p>
-                    </span>
+
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="nome"> CPF</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="cpf" type="text" placeholder="CPF (Requerido)" formControlName="cpf">
+                    <input class="form-control" id="cpf" type="text" placeholder="CPF (Requerido)" formControlName="cpf" cpf [textMask]="{mask: MASKS.cpf.textMask}">
 
                 </div>
             </div>
@@ -25,13 +23,8 @@
             <div class="form-group">
                 <label class="col-md-2 control-label" for="nome"> E-mail</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="email" type="text" placeholder="E-mail (Requerido)" formControlName="email">
-                    <span class="text-danger" *ngIf="cadastroForm.get('email').errors && ( cadastroForm.get('email').dirty || cadastroForm.get('email').touched )">
-                        <p>Preencha o campo email</p>
-                    </span>
-                    <span class="text-danger" *ngIf="cadastroForm.get('email').errors && ( cadastroForm.get('email').dirty || cadastroForm.get('email').touched )">
-                        <p>E-mail em formato invalido!</p>
-                    </span>
+                    <input class="form-control" id="email" type="text" placeholder="E-mail (Requerido)" formControlName="email" [ngClass]="{'is-invalid': cadastroForm.get('email').errors && ( cadastroForm.get('email').dirty || cadastroForm.get('email').touched )}">
+
                 </div>
             </div>
 
