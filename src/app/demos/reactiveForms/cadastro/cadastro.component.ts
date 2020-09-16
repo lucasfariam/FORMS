@@ -1,21 +1,20 @@
-
-import { Usuario } from './models/usuario';
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChildren } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormControlName } from '@angular/forms';
+
+import { Usuario } from './models/usuario';
 import { NgBrazilValidators } from 'ng-brazil';
-import { Observable, fromEvent, merge } from 'rxjs';
 import { utilsBr } from 'js-brasil';
 import { CustomValidators } from 'ng2-validation';
 import { ValidationMessages, GenericValidator, DisplayMessage } from './generic-form-validation';
+import { Observable, fromEvent, merge } from 'rxjs';
 
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro.component.html'
 })
-
 export class CadastroComponent implements OnInit, AfterViewInit {
 
-  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[]
+  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
   cadastroForm: FormGroup
   usuario: Usuario
@@ -30,26 +29,26 @@ export class CadastroComponent implements OnInit, AfterViewInit {
 
     this.validationMessages = {
       nome: {
-        required: 'O nome é requerido',
-        minlength: 'O nome precisa no minimo 2 caracteres',
-        maxlength: 'O nome precisa ter no maximo 150 caracteres'
+        required: 'O Nome é requerido',
+        minlength: 'O Nome precisa ter no mínimo 2 caracteres',
+        maxlength: 'O Nome precisa ter no máximo 150 caracteres'
       },
       cpf: {
         required: 'Informe o CPF',
-        cpf: 'CPF em formato invalido'
+        cpf: 'CPF em formato inválido'
       },
       email: {
         required: 'Informe o e-mail',
-        email: 'Email invalido'
+        email: 'Email inválido'
       },
       senha: {
         required: 'Informe a senha',
-        rangelength: 'A senha deve possuir entre 6 e 15 caracteres'
+        rangeLength: 'A senha deve possuir entre 6 e 15 caracteres'
       },
       senhaConfirmacao: {
         required: 'Informe a senha novamente',
-        rangelength: 'A senha deve possuir entre 6 e 15 caracteres',
-        equalTo: 'As senha não conferem'
+        rangeLength: 'A senha deve possuir entre 6 e 15 caracteres',
+        equalTo: 'As senhas não conferem'
       }
     }
     this.genericValidator = new GenericValidator(this.validationMessages)
@@ -57,13 +56,13 @@ export class CadastroComponent implements OnInit, AfterViewInit {
 
   //abaixo campos que seram preenchido e enviados quando for submetido
   ngOnInit() {
-    let senha = new FormControl('', [Validators.required, CustomValidators.rangelength([6,5])]) //duas variaveis fazem a confirmaçao se a senha é igual a outra
-    let senhaConfirm = new FormControl('', [Validators.required, CustomValidators.rangelength([6,5]), CustomValidators.equalTo(senha)])
+    let senha = new FormControl('', [Validators.required, CustomValidators.rangeLength([6,15])]) 
+    let senhaConfirm = new FormControl('', [Validators.required, CustomValidators.rangeLength([6,15]), CustomValidators.equalTo(senha)])
 
     this.cadastroForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(150)] ],
-      cpf: ['', [Validators.required, NgBrazilValidators.cpf] ],
-      email: ['', [Validators.required, Validators.email] ],
+      nome: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(150)]],
+      cpf: ['', [Validators.required, NgBrazilValidators.cpf]],
+      email: ['', [Validators.required, Validators.email]],
       senha: senha,
       senhaConfirmacao: senhaConfirm
     })
@@ -71,11 +70,11 @@ export class CadastroComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     let controlBlurs: Observable<any>[] = this.formInputElements
-    .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, ' blur'))
+    .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
     merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.cadastroForm)
-    })
+      this.displayMessage = this.genericValidator.processarMensagens(this.cadastroForm);
+    });
   }
 
   adicionarUsuario() {
