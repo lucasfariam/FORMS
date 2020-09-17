@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NotFoundComponent } from './navegacao/not-found/not-found.component';
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './navegacao/home/home.component';
 import { SobreComponent } from './institucional/sobre/sobre.component';
@@ -12,7 +13,11 @@ const rootRouterConfig: Routes = [
     { path: 'cadastro', component: CadastroComponent },
     { path: 'produtos', 
         loadChildren: () => import('./demos/arquitetura-componentes/produto.module')
-        .then(m => m.ProdutoModule)} 
+        .then(m => m.ProdutoModule)} ,
+
+        
+    { path: '**', component: NotFoundComponent}, //sempre por ultimo na rota
+    
 ]; 
 
 @NgModule({
