@@ -76,7 +76,7 @@ export class CadastroComponent implements OnInit, AfterViewInit {
 
     merge(...controlBlurs).subscribe(() => {
       this.displayMessage = this.genericValidator.processarMensagens(this.cadastroForm);
-      this.mudancasNaoSalvas = true
+      this.mudancasNaoSalvas = true // se o cadastro for false ele nao envia 
     });
   }
 

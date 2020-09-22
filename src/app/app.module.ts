@@ -1,7 +1,11 @@
 import { appRoutingModule } from './app.routes';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+
+import { registerLocaleData } from '@angular/common';
+import  localePt  from '@angular/common/locales/pt';
+registerLocaleData(localePt);
 
 import { NgBrazil } from 'ng-brazil'
 import { TextMask } from 'ng-brazil';
@@ -13,12 +17,27 @@ import { CadastroComponent } from './demos/reactiveForms/cadastro/cadastro.compo
 import { NavegacaoModule } from './navegacao/navegacao.module';
 import { AuthGuard } from './services/app.guard';
 import { CadastroGuard } from './services/cadastro.guard';
+import { FilmesComponent } from './demos/pipes/filmes/filmes.component';
+import { FileSizaPipe } from './demos/pipes/filmes/filesize.pipe';
+import { ImageFormaterPipe } from './demos/pipes/filmes/image.pipe';
+import { BarModule } from './demos/bar-di-zones/bar.module';
+import { BarServices } from './demos/bar-di-zones/bar.service';
+import { HttpClientModule } from '@angular/common/http';
+import { TodoModule } from './demos/todo-list/todo.module';
+
+
+export const BAR_PROVIDERS: Provider[] = [
+  BarServices
+]
 
 @NgModule({
   declarations: [
     AppComponent,
     SobreComponent,
-    CadastroComponent
+    CadastroComponent,
+    FilmesComponent,
+    FileSizaPipe,
+    ImageFormaterPipe,
   ],
   imports: [
     BrowserModule,
@@ -28,11 +47,18 @@ import { CadastroGuard } from './services/cadastro.guard';
     NgBrazil,
     CustomFormsModule,
     NavegacaoModule,
-    appRoutingModule
+    HttpClientModule,
+    appRoutingModule,
+    BarModule.forRoot({
+      unidadeId: 1000,
+      unidadeToken: 'eca938c99a0e9ff91029dc'
+    }),
+    TodoModule
   ],
   providers: [
     AuthGuard,
-    CadastroGuard
+    CadastroGuard,
+    // BAR_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })
