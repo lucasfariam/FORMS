@@ -19,5 +19,10 @@ export class TasksFinalizadasComponent implements OnInit {
     this.finalizados$ = this.store.getTodoList() // obtendo a lista de tarefas e filtrando no pipe, atraves do map
       .pipe(
         map(todolist => todolist.filter(task => task.finalizado)))// das quais ela ta finalizado true       
-  } 
+  }
+
+  onToggle(event) { // metodo do evento do click
+    this.taskService.toggle(event)
+  }
+
 }

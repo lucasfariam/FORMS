@@ -9,18 +9,19 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { ToDoListComponent } from './components/todo-list/todo-list.component';
 import { TodoComponent } from './todo.component';
 import { Store } from './todo.store';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
-    CommonModule, 
+    CommonModule,
     HttpClientModule,
-    
+    ReactiveFormsModule
   ],
   providers: [
-    TasksService, // serviços da tarefas
+    TasksService,
     Store
   ],
-  declarations: [ // exportandos componentes para ser utilizado no modulo principal
+  declarations: [
     TodoComponent,
     TasksFinalizadasComponent,
     TasksIniciadasComponent,

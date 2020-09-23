@@ -1,8 +1,9 @@
-import { Store } from './todo.store';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 import { Task } from './task';
+import { Store } from './todo.store';
 import { tap } from 'rxjs/operators';
 
 @Injectable()
@@ -10,15 +11,52 @@ export class TasksService {
 
   constructor(private http: HttpClient, private store: Store) { }
 
-  // metodo que me retorna o simulado da URL teste do backend
+// metodo que me retorna o simulado da URL teste do backend
   getToDoList$: Observable<Task[]> = this.http
     .get<Task[]>('http://localhost:3000/todolist')
-      .pipe( // toda vez que chamar a observable, vou receber o valor e ao msm tempo setar o valor na "store"
-        tap(next => this.store.set('todolist', next)))
+    .pipe( // toda vez que chamar a observable, vou receber o valor e ao msm tempo setar o valor na "store"
+      tap(next => this.store.set('todolist', next)))
 
-  
+  toggle(event: any) {
+    this.http
+      .put(`http://localhost:3000/todolist/${event.task.id}`, event.task)
+      .subscribe(() => {
+        const value = this.store.value.todolist //esse value representa minha todolist
+    // manipulando estado da entidade, da qual recebi a tarefa e verifiquei se realmente 
+    // batia os IDS e propaguei essa mudança para a lista de tarefas e retornei
+        const todolist = value.map((task: Task) => {
+          if (event.task.id === task.id) {
+            return { ...task, ...event.task }
+          } else {
+            return task
+          }
+        })
+        this.store.set('todolist', todolist) // salvei novamente o estado alterado com base na mudança
+      })
+  }
+// metodo de adicionar tarefa, e att store
+  adicionar(task: Task) {
+    this.http
+      .post('http://localhost:3000/todolist', task)
+      .subscribe(() => {
+        const value = this.store.value.todolist;
+        task.id = value.slice(-1).pop().id + 1
+        task.finalizado = false;
+        task.iniciado = false;
+        value.push(task);
+        this.store.set('todolist', value);
+      });
+  }
+// remover tarefa setando pela ID
+  remover(id: number) {
+    this.http
+      .delete(`http://localhost:3000/todolist/${id}`)
+      .subscribe(() => {
+        const value = this.store.value.todolist.filter(item => item.id !== id);
+        this.store.set('todolist', value);
+      });
+  }
 }
-
   // getToDoList(): Observable<Task[]> {
   //   return this.http
   //   .get<Task[]>('http://localhost:3000/todolist') 

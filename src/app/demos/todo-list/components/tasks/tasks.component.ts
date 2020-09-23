@@ -25,6 +25,12 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.subscription = this.taskService.getToDoList$.subscribe()// ativando o fluxo de dado
   }
 
+  onToggle(event) {
+    this.taskService.toggle(event)
+  }
+  onAdd() {
+
+  }
   ngOnDestroy() { //metodo quer dizer estou fechando a subscription que eu tinha ACIMA
     this.subscription.unsubscribe()
   }  

@@ -1,6 +1,6 @@
 <div class="tasks">
     <!-- [list]="todoList$ | async" - AQUI PASSAMOS A LISTA E PIPE ASYNC PARA FALAR QUE É ASINCRONO -->
-    <todo-list [list]="todolist$ | async">
+    <todo-list [list]="todolist$ | async" (toggle)="onToggle($event)">
         Tarefas
     </todo-list>
 </div>
